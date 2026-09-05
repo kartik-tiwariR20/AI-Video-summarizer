@@ -269,18 +269,23 @@ if run_clicked:
                 time.sleep(0.35)  # cosmetic pacing only
             st.markdown('</div>', unsafe_allow_html=True)
 
+            error_occurred = False
             try:
                 result = run_pipeline(source, language)
                 bar.progress(100, text="Done!")
                 st.session_state.result = result
-                st.success("✅ Analysis complete!")
             except Exception as e:
                 st.session_state.result = None
-                st.error(f"Something went wrong while processing: {e}")
+                error_occurred = True
+                st.session_state.last_error = str(e)
 
         st.session_state.processing = False
-        progress_container.empty()
 
+        if error_occurred:
+            st.error(f"Something went wrong while processing: {st.session_state.last_error}")
+        else:
+            progress_container.empty()
+            st.success("✅ Analysis complete!")
 # ──────────────────────────────────────────────────────────────────────────
 # RESULTS DISPLAY
 # ──────────────────────────────────────────────────────────────────────────
