@@ -1,12 +1,31 @@
 import os
-
-FFMPEG_DIR = r"C:\Users\kartik tiwari\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin"
-os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ["PATH"]
-# ---------------------------------------------------------------------------
+import shutil
 
 import yt_dlp
 from pydub import AudioSegment
 
+
+def _resolve_ffmpeg_dir() -> str:
+    env_dir = os.getenv("FFMPEG_DIR")
+    if env_dir and os.path.isfile(os.path.join(env_dir, "ffmpeg.exe" if os.name == "nt" else "ffmpeg")):
+        return env_dir
+
+    ffmpeg_on_path = shutil.which("ffmpeg")
+    if ffmpeg_on_path:
+        return os.path.dirname(ffmpeg_on_path)
+
+    fallback = r"C:\Users\kartik tiwari\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin"
+    if os.path.isdir(fallback):
+        return fallback
+
+    raise FileNotFoundError(
+        "ffmpeg not found. Install it and either add it to PATH, or set the "
+        "FFMPEG_DIR environment variable to its 'bin' folder."
+    )
+
+
+FFMPEG_DIR = _resolve_ffmpeg_dir()
+os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ["PATH"]
 DOWNLOAD_DIR = 'downloades'
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
