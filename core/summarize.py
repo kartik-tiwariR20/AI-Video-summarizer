@@ -1,3 +1,4 @@
+from core.llm_utils import with_retry
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -53,7 +54,7 @@ def summarize(transcript : str) -> str:
 
     return combined_chain.invoke(combined)
 
-def generate_title(transcipt : str) -> str:
+def generate_title(transcript : str) -> str:
     llm = get_llm()
 
     
