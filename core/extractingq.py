@@ -1,3 +1,4 @@
+from core.llm_utils import with_retry
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -19,6 +20,7 @@ def build_chain(system_prompt : str):
     ]) | llm |StrOutputParser()
     )
 
+@with_retry()
 def extract_action_items(transcript:str)->str:
     chain = build_chain(
          "You are an expert meeting analyst. From the meeting transcript, "
@@ -32,6 +34,7 @@ def extract_action_items(transcript:str)->str:
     return chain.invoke(transcript)
 
 
+@with_retry()
 def extract_key_decisions(transcript: str) -> str:
     chain = build_chain(
         "You are an expert meeting analyst. From the meeting transcript, "
@@ -41,6 +44,7 @@ def extract_key_decisions(transcript: str) -> str:
     return chain.invoke(transcript)
 
 
+@with_retry()
 def extract_questions(transcript: str) -> str:
     chain = build_chain(
         "From the meeting transcript, extract all unresolved questions "
