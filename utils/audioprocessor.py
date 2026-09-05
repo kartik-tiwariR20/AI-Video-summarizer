@@ -29,9 +29,12 @@ os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ["PATH"]
 DOWNLOAD_DIR = 'downloades'
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
-AudioSegment.converter = os.path.join(FFMPEG_DIR, "ffmpeg.exe")
-AudioSegment.ffmpeg = os.path.join(FFMPEG_DIR, "ffmpeg.exe")
-AudioSegment.ffprobe = os.path.join(FFMPEG_DIR, "ffprobe.exe")
+_ffmpeg_exe = "ffmpeg.exe" if os.name == "nt" else "ffmpeg"
+_ffprobe_exe = "ffprobe.exe" if os.name == "nt" else "ffprobe"
+
+AudioSegment.converter = os.path.join(FFMPEG_DIR, _ffmpeg_exe)
+AudioSegment.ffmpeg = os.path.join(FFMPEG_DIR, _ffmpeg_exe)
+AudioSegment.ffprobe = os.path.join(FFMPEG_DIR, _ffprobe_exe)
 
 
 def download_youtube_audio(url: str) -> str:
