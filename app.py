@@ -4,6 +4,7 @@ Wraps the existing pipeline in main.py (run_pipeline) with a polished,
 animated, interactive front-end.
 """
 
+import os
 import time
 import streamlit as st
 
