@@ -7,6 +7,9 @@ animated, interactive front-end.
 import time
 import streamlit as st
 
+if "YOUTUBE_COOKIES" in st.secrets:
+    os.environ["YOUTUBE_COOKIES"] = st.secrets["YOUTUBE_COOKIES"]
+    
 from main import run_pipeline
 from core.rag import ask_question
 
