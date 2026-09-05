@@ -1,3 +1,4 @@
+from core.llm_utils import with_retry
 import os
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -54,7 +55,7 @@ Context from meeting transcript:
 
     return rag_chain
 
-
+@with_retry()
 def ask_question(rag_chain, question:str) -> str:
     print(f"Question : {question}")
     answer = rag_chain.invoke(question)
